@@ -1,1 +1,349 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ARCANA // Analizador de Expedientes</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="stars"></div>
+
+  <main class="app">
+
+    <header class="topbar">
+
+      <div>
+        <div class="eyebrow">
+          ◆ ARCANA SYSTEM // NIVEL 01
+        </div>
+
+        <h1>
+          ANALIZADOR
+          <span>DE EXPEDIENTES</span>
+        </h1>
+
+        <p class="subtitle">
+          Cargá un PDF. Extraemos lo esencial sin salir de tu PC.
+        </p>
+      </div>
+
+      <div class="status">
+        <i></i>
+        SISTEMA LOCAL · $0
+      </div>
+
+    </header>
+
+
+    <section class="hero">
+
+      <div class="rune">
+        ✦
+      </div>
+
+      <div>
+        <h2>
+          El Grimorio Documental
+        </h2>
+
+        <p>
+          Convertí un PDF extenso en una ficha clara:
+          <b>fecha del evento</b>,
+          <b>importe</b>,
+          resumen y archivos embebidos.
+        </p>
+      </div>
+
+    </section>
+
+
+    <section
+      class="dropzone"
+      id="dropzone"
+    >
+
+      <div class="orb">
+        ⌁
+      </div>
+
+      <h3 id="dropTitle">
+        ARRASTRÁ TU PDF AQUÍ
+      </h3>
+
+      <p>
+        o elegilo desde tu computadora
+      </p>
+
+      <label
+        class="btn"
+        for="pdfInput"
+      >
+        ⚔ CARGAR PDF
+      </label>
+
+      <input
+        id="pdfInput"
+        type="file"
+        accept="application/pdf,.pdf"
+      >
+
+      <div
+        class="file-name"
+        id="fileName"
+      >
+        Ningún archivo seleccionado
+      </div>
+
+    </section>
+
+
+    <section class="actions">
+
+      <button
+        id="analyzeBtn"
+        class="analyze"
+        disabled
+      >
+        ◈ ANALIZAR EXPEDIENTE
+      </button>
+
+      <button
+        id="clearBtn"
+        class="clear"
+      >
+        LIMPIAR
+      </button>
+
+    </section>
+
+
+    <div
+      class="progress-wrap hidden"
+      id="progressWrap"
+    >
+
+      <div class="progress-label">
+
+        <span id="progressText">
+          Invocando el motor...
+        </span>
+
+        <span id="progressPct">
+          0%
+        </span>
+
+      </div>
+
+      <div class="progress">
+
+        <div id="progressBar"></div>
+
+      </div>
+
+    </div>
+
+
+    <section
+      class="results hidden"
+      id="results"
+    >
+
+      <div class="section-title">
+        <span>◆</span>
+        FICHA DEL EXPEDIENTE
+      </div>
+
+
+      <div class="cards">
+
+
+        <article class="card date-card">
+
+          <div class="card-icon">
+            ◷
+          </div>
+
+          <div>
+
+            <small>
+              FECHA DETECTADA
+            </small>
+
+            <strong id="dateResult">
+              —
+            </strong>
+
+            <em id="dateConfidence">
+              Buscando...
+            </em>
+
+          </div>
+
+        </article>
+
+
+        <article class="card money-card">
+
+          <div class="card-icon">
+            $
+          </div>
+
+          <div>
+
+            <small>
+              IMPORTE DETECTADO
+            </small>
+
+            <strong id="moneyResult">
+              —
+            </strong>
+
+            <em id="moneyConfidence">
+              Buscando...
+            </em>
+
+          </div>
+
+        </article>
+
+
+        <article class="card pages-card">
+
+          <div class="card-icon">
+            ▤
+          </div>
+
+          <div>
+
+            <small>
+              PÁGINAS LEÍDAS
+            </small>
+
+            <strong id="pagesResult">
+              —
+            </strong>
+
+            <em>
+              Texto procesado localmente
+            </em>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+      <div class="grid">
+
+
+        <article class="panel">
+
+          <div class="panel-head">
+
+            <span>✧</span>
+            RESUMEN ESENCIAL
+
+          </div>
+
+          <div
+            id="summary"
+            class="summary"
+          >
+            —
+          </div>
+
+        </article>
+
+
+        <article class="panel">
+
+          <div class="panel-head">
+
+            <span>◈</span>
+            DATOS CLAVE
+
+          </div>
+
+          <div
+            id="keyData"
+            class="keydata"
+          >
+            —
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+      <article class="panel attachments-panel">
+
+        <div class="panel-head">
+
+          <span>⌘</span>
+          ARCHIVOS EMBEBIDOS / ADJUNTOS
+
+        </div>
+
+        <div
+          id="attachments"
+          class="attachments empty"
+        >
+          No se detectaron archivos embebidos en el PDF.
+        </div>
+
+      </article>
+
+
+      <article class="panel raw-panel">
+
+        <details>
+
+          <summary>
+            VER TEXTO EXTRAÍDO
+          </summary>
+
+          <pre id="rawText"></pre>
+
+        </details>
+
+      </article>
+
+
+    </section>
+
+
+    <footer>
+
+      ARCANA //
+      El procesamiento del PDF se realiza en este navegador.
+      El archivo no se sube a un servidor.
+
+    </footer>
+
+  </main>
+
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs"
+    type="module"
+  ></script>
+
+  <script
+    type="module"
+    src="script.js"
+  ></script>
+
+</body>
+</html>
+```
 
